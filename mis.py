@@ -9,7 +9,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Env_sender import smtp_send
+from env_sender import smtp_send
+from dotenv import load_dotenv
 
 class ElementLocators(Enum):
     # Form fields
