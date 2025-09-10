@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from Env_sender import smtp_send
+from env_sender import smtp_send
 from dotenv import load_dotenv
 
 class ContactUsLocators(Enum):
@@ -42,12 +42,46 @@ class OurServiceLocators(Enum):
     PROJECT_DESCRIPTION = (By.ID, "project_description")
     SUBMIT_BUTTON = (By.CLASS_NAME, "primary_btn")
 
+class HireDeveloversLocators(Enum):
+    FULL_NAME = (By.ID, "full_name")
+    EMAIL_ID = (By.ID, "email_id")
+    CONTACT_NUMBER = (By.ID, "contact_number")
+    COMPANY_URL = (By.ID, "company_url")
+    SERVICE_LABEL = (By.ID, "service_label")
+    BUDGET_LABEL = (By.ID, "budget_label")
+    REQUIREMENT_LABEL = (By.ID, "requirement_label")
+    START_LABEL = (By.ID, "start_label")
+    PROJECT_DESCRIPTION = (By.ID, "project_description")
+    SUBMIT_BUTTON = (By.CLASS_NAME, "primary_btn")
+
+class CareerFormLocators(Enum):
+    FULL_NAME = (By.NAME, "fname")
+    EMAIL_ID = (By.ID, "email_id")
+    CONTACT_NUMBER = (By.NAME, "contact_number")
+    TOTAL_EXP = (By.NAME, "total-experience")
+    RELEVANT_EXP = (By.NAME, "relevant-experience")
+    CURRENT_CTC = (By.NAME, "Current-CTC")
+    EXPECTED_CTC = (By.NAME, "Expected-CTC")
+    CURRENT_LOCATOIN = (By.NAME, "Current-Location")
+    NOTICE_PERIOD = (By.NAME, "notice-period")
+    RESUME_UPLOAD = (By.ID, "resume")
+    SUBMIT_BUTTON = (By.ID, "applynow")
+
 URLS = [
     ("Bytes Contact Us", "https://www.bytestechnolab.com/contact-us/", ContactUsLocators),
     ("Bytes Contact Us UK", "https://www.bytestechnolab.com/uk/contact-us/", ContactUsLocators),
+    ("Bytes Contact Us AU", "https://www.bytestechnolab.com/au/contact-us/", ContactUsLocators),
+    ("Bytes Contact Us SA", "https://www.bytestechnolab.com/sa/contact-us/", ContactUsLocators),
     ("Bytes Let's Talk", "https://www.bytestechnolab.com/", LetsTalkLocators),
     ("Bytes Let's Talk UK", "https://www.bytestechnolab.com/uk/", LetsTalkLocators),
-    ("Bytes OurService", "https://www.bytestechnolab.com/our-services", OurServiceLocators)
+    ("Bytes Let's Talk AU", "https://www.bytestechnolab.com/au/", LetsTalkLocators),
+    ("Bytes Let's Talk SA", "https://www.bytestechnolab.com/sa/", LetsTalkLocators),
+    ("Bytes OurService", "https://www.bytestechnolab.com/our-services", OurServiceLocators),
+    ("Bytes Hire Develovers", "https://www.bytestechnolab.com/hire-developers", HireDeveloversLocators),
+    ("Bytes Hire Develovers UK", "https://www.bytestechnolab.com/uk/hire-developers", HireDeveloversLocators),
+    ("Bytes Hire Develovers AU", "https://www.bytestechnolab.com/au/hire-developers", HireDeveloversLocators),
+    ("Bytes Hire Develovers SA", "https://www.bytestechnolab.com/sa/hire-developers", HireDeveloversLocators),
+    ("Bytes Career Form", "https://www.bytestechnolab.com/opportunities/bytes-qa-testing-opening/", CareerFormLocators)
 ]
 
 class BytesTests(unittest.TestCase):
@@ -59,7 +93,7 @@ class BytesTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
         options.add_argument("--window-size=1920,1080")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
@@ -80,7 +114,7 @@ class BytesTests(unittest.TestCase):
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             self.wait.until(EC.visibility_of(element))
             element.clear()
-            element.send_keys(value)
+            element.send_keys(value)    
         except Exception as e:
             raise Exception(f"Error in fill_input({locator}): {str(e)}")
 
@@ -91,15 +125,47 @@ class BytesTests(unittest.TestCase):
                     print(f"\n🔍 Testing: {test_name} - {url}")
                     self.driver.get(url)
 
-                    # Fill text fields
-                    self.fill_input(locators.FULL_NAME.value, "Test Bytes")
-                    time.sleep(5)  # Wait for the page to load
-                    self.fill_input(locators.EMAIL_ID.value, "ilfas.mansuri@bytestechnolab.com")
-                    time.sleep(5)  # Wait for the email field to be ready
-                    self.fill_input(locators.CONTACT_NUMBER.value, "9687414356")
-                    time.sleep(5)  # Wait for the contact number field to be ready
-                    self.fill_input(locators.COMPANY_URL.value, "Test Bytes Technolab")
-                    time.sleep(5)  # Wait for the company URL field to be ready
+                    if locators == CareerFormLocators:
+                    # Career Form handling
+                        self.fill_input(locators.FULL_NAME.value, "Ilfas Mansuri")
+                        time.sleep(5)
+                        self.fill_input(locators.EMAIL_ID.value, "ilfas.mansuri@bytestechnolab.com")
+                        time.sleep(5)
+                        self.fill_input(locators.CONTACT_NUMBER.value, "9876543210")
+                        time.sleep(5)
+                        self.fill_input(locators.TOTAL_EXP.value, "3")
+                        time.sleep(5)
+                        self.fill_input(locators.RELEVANT_EXP.value, "2")
+                        time.sleep(5)
+                        self.fill_input(locators.CURRENT_CTC.value, "500000")
+                        time.sleep(5)
+                        self.fill_input(locators.EXPECTED_CTC.value, "700000")
+                        time.sleep(5)
+                        self.fill_input(locators.CURRENT_LOCATOIN.value, "Ahmedabad")
+                        time.sleep(5)
+                        self.fill_input(locators.NOTICE_PERIOD.value, "30 Days")
+                        time.sleep(5)
+                        # File upload (resume)
+                        resume_path = os.path.abspath("/home/rutvik/Documents/Fake-Resume.pdf")
+                        self.wait.until(EC.presence_of_element_located(locators.RESUME_UPLOAD.value)).send_keys(resume_path)
+                        time.sleep(5)
+                        # Submit
+                        submit_button = self.wait.until(EC.element_to_be_clickable(locators.SUBMIT_BUTTON.value))
+                        # self.driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
+                        # self.driver.execute_script("arguments[0].click();", submit_button)
+
+                    else:
+                    # Default handling for Contact Us, Let's Talk, Our Services, Hire Developers
+                        self.fill_input(locators.FULL_NAME.value, "Test Bytes")
+                        time.sleep(2)
+                        self.fill_input(locators.EMAIL_ID.value, "ilfas.mansuri@bytestechnolab.com")
+                        time.sleep(2)
+                        self.fill_input(locators.CONTACT_NUMBER.value, "9687414356")
+                        time.sleep(2)
+
+                        if hasattr(locators, "COMPANY_URL"):
+                            self.fill_input(locators.COMPANY_URL.value, "Test Bytes Technolab")
+
                     # Handle dropdowns
                     dropdown_fields = ['SERVICE_LABEL', 'BUDGET_LABEL', 'REQUIREMENT_LABEL', 'START_LABEL']
                     for field in dropdown_fields:
@@ -108,14 +174,16 @@ class BytesTests(unittest.TestCase):
                             dropdown = self.wait.until(EC.element_to_be_clickable(dropdown_locator))
                             self.driver.execute_script("arguments[0].scrollIntoView(true);", dropdown)
                             Select(dropdown).select_by_index(1)
-                    time.sleep(5)  # Wait for dropdown selection to be processed
-                    self.fill_input(locators.PROJECT_DESCRIPTION.value, "Automation testing form submission")
-                    time.sleep(5)  # Wait for the project description field to be ready
+
+                    if hasattr(locators, "PROJECT_DESCRIPTION"):
+                        self.fill_input(locators.PROJECT_DESCRIPTION.value, "Automation testing form submission")
+
                     # Submit
                     submit_button = self.wait.until(EC.element_to_be_clickable(locators.SUBMIT_BUTTON.value))
                     self.driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
                     self.driver.execute_script("arguments[0].click();", submit_button)
-                    time.sleep(10)  # Wait for the form submission to complete
+
+                    time.sleep(10)  # Wait for submission
                     self.email_counter += 1
                     print(f"✅ Passed: {test_name}")
                     self.passed_urls.append(f"✅ {test_name} - {url}")
@@ -133,7 +201,7 @@ class BytesTests(unittest.TestCase):
             f.write(str(cls.email_counter))
 
         # Uncomment to send email report
-        cls.send_email_report()
+        # cls.send_email_report()
 
     @classmethod
     def send_email_report(cls):
@@ -148,7 +216,7 @@ class BytesTests(unittest.TestCase):
         <p><b>Passed:</b></p>
         <ul>{''.join(f"<li>{url}</li>" for url in cls.passed_urls)}</ul>
         <p><b>Failed:</b></p>
-        <ul>{''.join(f"<li>{url}</li>" for url in cls.failed_urls) if cls.failed_urls else '<li>No test failures</li>'}</ul>
+        <ul>{''.join(f"<li>{url}</li>" for url in cls.failed_urls) if cls.failed_urls else '<li>No test failures 🎉</li>'}</ul>
         """
 
         smtp_send(
