@@ -68,6 +68,7 @@ URLS = {
          ("Global", "https://magnetoitsolutions.com/ppc/headless-commerce/?qa=test"),
          ("UK", "https://magnetoitsolutions.com/uk/ppc/headless-commerce/?qa=test"),
          ("Dubai", "https://magnetoitsolutions.com/dubai/ppc/erpnext/?qa=test"),
+         ("SA", "https://magnetoitsolutions.com/sa/ppc/headless-commerce/?qa=test"),
     ],
     # "service_page_form": [
     #      ("Global", "https://magnetoitsolutions.com/services/pimcore-development-company/?qa=test"),
