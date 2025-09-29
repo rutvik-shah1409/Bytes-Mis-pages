@@ -100,7 +100,7 @@ class BytesTests(unittest.TestCase):
         options.add_argument("--disable-dev-shm-usage")
 
         cls.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        cls.wait = WebDriverWait(cls.driver, 20)
+        cls.wait = WebDriverWait(cls.driver, 30)
 
         if os.path.exists(cls.counter_file):
             with open(cls.counter_file, 'r') as f:
